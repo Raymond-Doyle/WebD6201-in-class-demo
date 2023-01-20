@@ -1,8 +1,8 @@
 var welcomeLabel = document.getElementById("welcome");
 var displayEvent = document.getElementById("displayEvent");
 
-var userDisplay = document.getElementById("username");
-var passDisplay = document.getElementById("password");
+var userDisplay = document.getElementById("userDisplay");
+var passDisplay = document.getElementById("passDisplay");
 
 //Click Event
 welcomeLabel.addEventListener("click", function (){
