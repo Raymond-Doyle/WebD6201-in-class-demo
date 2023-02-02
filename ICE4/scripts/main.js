@@ -29,6 +29,9 @@
         </div>`*/
         
     
+        let doyle = new Contact("Raymond Doyle", "999-999-9999", "raymond.doyle1@dcmail.ca")
+        console.log(doyle.toString())
+
     }
 
 
