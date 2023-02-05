@@ -4,6 +4,7 @@ var displayEvent = document.getElementById("displayEvent");
 var userDisplay = document.getElementById("userDisplay");
 var passDisplay = document.getElementById("passDisplay");
 
+/*
 //Click Event
 welcomeLabel.addEventListener("click", function (){
     console.log("Event: click");
@@ -27,6 +28,7 @@ welcomeLabel.addEventListener("mouseout", function (){
     console.log("Event: mouseout");
     displayEvent.textContent = "Event: mouseout";
 });
+*/
 
 function validateForm(){
     let x = document.forms["myForm"]["username"].value;

@@ -1,6 +1,6 @@
 (function (){
 
-    function DisplayButton(){
+    function DisplayHome(){
         let randomButton = document.getElementById("randomButton")
         randomButton.addEventListener("click", function(){
             location.href = './projects.html'
@@ -19,31 +19,56 @@
         mainParagraph.textContent = secondString
 
         mainContent.before(mainParagraph)
-        //mainContent.appendChild(mainParagraph)
-        //document.getElementById("randomButton").remove()
+    }
 
-        /*documentBody.innerHTML = `
-        <div class="container">
-            <h1 class="display-1">Hello WEBD</h1>
-            <p>This is the test page</p>
-        </div>`*/
-        
-    
-        let doyle = new Contact("Raymond Doyle", "999-999-9999", "raymond.doyle1@dcmail.ca")
-        console.log(doyle.toString())
+    function DisplayProjects(){
+        console.log("Projects Page")
+    }
+
+    function DisplayContacts(){
+        console.log("Contacts Page")
+
+        let submitButton = document.getElementById("submitButton")
+        let subscribeCheckbox = document.getElementById("subscribeCheckbox")
+
+        console.log("Contacts Page")
+
+
+        submitButton.addEventListener("click", function(event){
+            event.preventDefault
+            if (subscribeCheckbox.checked){
+                console.log("The user had subscribed")
+            }
+        })
+    }
+
+    function DisplayContactList(){
+        console.log("Contact List Page")
 
     }
 
+    function DisplayReferences(){
+        console.log("References Page")
+    }
 
     function Start(){
         console.log("App Started!")
     
         switch (document.title){
             case "Homepage - WEBD6201 Demo":
-                DisplayButton()
+                DisplayHome()
                 break
             case "Projects - WEBD6201 Demo":
-                DisplayButton()
+                DisplayProjects()
+                break
+            case "Contact Us - WEBD6201 Demo":
+                DisplayContacts()
+                break
+            case "Contact List - WEBD6201 Demo":
+                DisplayContactList()
+                break
+            case "References - WEBD6201 Demo":
+                DisplayReferences()
                 break
         }
 
