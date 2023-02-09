@@ -1,10 +1,23 @@
 (function (){
 
     function DisplayHome(){
-        let randomButton = document.getElementById("randomButton")
-        randomButton.addEventListener("click", function(){
-            location.href = './projects.html'
+
+        //Least Amount of Memory Heap
+        // let randomButton = document.getElementById("randomButton")
+        // randomButton.addEventListener("click", function(){
+        //     location.href = './projects.html'
+        // })
+
+        //Most Amount of Memory Heap
+        $("#randomButton").on("click", function() {
+            location.href - 'contacts.html'
         })
+
+        //Second Most Amount of Memory Heap - JS Query
+        //document.querySelectorAll("#randomButton").forEach(element => element.addEventListener("click", () => { location.href = 'contacts.html'}) )
+
+
+
         let mainContent  = document.getElementsByTagName("main")[0]
         //console.log(mainContent)
         mainContent.setAttribute("class", "container")
