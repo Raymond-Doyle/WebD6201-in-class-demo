@@ -9,29 +9,32 @@
         // })
 
         //Most Amount of Memory Heap
-        $("#randomButton").on("click", function() {
-            location.href - 'contacts.html'
-        })
+        // $("#randomButton").on("click", function() {
+        //     location.href - 'contacts.html'
+        // })
 
         //Second Most Amount of Memory Heap - JS Query
-        //document.querySelectorAll("#randomButton").forEach(element => element.addEventListener("click", () => { location.href = 'contacts.html'}) )
+        document.querySelectorAll("#randomButton").forEach(element => element.addEventListener("click", () => { location.href = 'contacts.html'}) )
 
 
 
-        let mainContent  = document.getElementsByTagName("main")[0]
-        //console.log(mainContent)
-        mainContent.setAttribute("class", "container")
-        documentBody = document.body
+        // let mainContent  = document.getElementsByTagName("main")[0]
+        // console.log(mainContent)
+        // mainContent.setAttribute("class", "container")
+        // documentBody = document.body
 
-        let mainParagraph = document.createElement("p")
-        mainParagraph.setAttribute("id", "MainParagraph")
-        mainParagraph.setAttribute("class", "mt-3 container")
+        // let mainParagraph = document.createElement("p")
+        // mainParagraph.setAttribute("id", "MainParagraph")
+        // mainParagraph.setAttribute("class", "mt-3 container")
 
-        let firstString = "This is a "
-        let secondString = `${firstString} paragraph that we added through javascript`
-        mainParagraph.textContent = secondString
+         let firstString = "This is a "
+         let secondString = `${firstString} paragraph that we added through javascript`
+        // mainParagraph.textContent = secondString
 
-        mainContent.before(mainParagraph)
+        // mainContent.appendChild(mainParagraph)
+
+        $("main").addClass("container").append(`<p id="MainParagraph" class="mt-3 container">${secondString}</p>`)
+
     }
 
     function DisplayProjects(){
@@ -86,9 +89,13 @@
                     <td class="text-center">${ contact.Name }</td>
                     <td class="text-center">${ contact.ContactNumber }</td>
                     <td class="text-center">${ contact.EmailAddress }</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                </tr>
+                    <td class="text-center">
+                    <button value="" class="btn btn-primary btn-sm edit"><i class="fas fa-edit fa-sm"></i>&nbsp; Edit</button>
+                    </td>
+                    <td class="text-center">
+                        <button value="" class="btn btn-danger btn-sm edit"><i class="fas fa-trash-alt fa-sm"></i>&nbsp; Delete</button>
+                    </td>
+                    </tr>
                 `
 
                 index++
