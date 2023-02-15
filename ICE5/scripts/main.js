@@ -9,12 +9,12 @@
         // })
 
         //Most Amount of Memory Heap
-        // $("#randomButton").on("click", function() {
-        //     location.href - 'contacts.html'
-        // })
+         $("#randomButton").on("click", function() {
+             location.href = 'contacts.html'
+         })
 
         //Second Most Amount of Memory Heap - JS Query
-        document.querySelectorAll("#randomButton").forEach(element => element.addEventListener("click", () => { location.href = 'contacts.html'}) )
+        //document.querySelectorAll("#randomButton").forEach(element => element.addEventListener("click", () => { location.href = 'contacts.html'}) )
 
 
 
@@ -90,7 +90,7 @@
                     <td class="text-center">${ contact.ContactNumber }</td>
                     <td class="text-center">${ contact.EmailAddress }</td>
                     <td class="text-center"><button value="" class="btn btn-primary btn-sm edit"><i class="fas fa-edit fa-sm"></i>&nbsp; Edit</button></td>
-                    <td class="text-center"><button value="${key}" id="deleteButton" class="btn btn-danger btn-sm edit"><i class="fas fa-trash-alt fa-sm"></i>&nbsp; Delete</button></td>
+                    <td class="text-center"><button value="${key}" id="deleteButton" class="btn btn-danger btn-sm delete"><i class="fas fa-trash-alt fa-sm"></i>&nbsp; Delete</button></td>
                     </tr>
                 `
 
@@ -99,7 +99,6 @@
 
             contactList.innerHTML = data
 
-            var button = document.getElementById("deleteButton")
             $("button.delete").on("click", function(){
                 localStorage.removeItem($(this).val())
                 location.href = "contact-list.html"
