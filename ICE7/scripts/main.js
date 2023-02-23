@@ -49,6 +49,33 @@
             }
     }
 
+    function TestFullName(){
+
+        let messageArea = $('#messageArea').hide()
+        
+        let fullNamePattern = /([A-Z][a-z]{1, 25})((\s|,|-)([A-Z][a-z]{1,25}))*(\s|-|,)*([A-Z][a-z]{1,25}))*/g
+
+        $('#fullName').on("blur", function(){
+            let fullNameText = $(this).val()
+            if (!fullNamePattern.test(fullNameText)){
+                $(this).trigger("focus")
+                $(this).trigger("select")
+
+                messageArea.addClass("alert alert-danger")
+                messageArea.text("Please enter a valid Full name which means a capitalized first name and a captialized last name")
+                messageArea.show()
+
+
+            }else{
+
+                messageArea.removeAttr("class")
+                messageArea.hide()
+
+            }
+        })
+
+    }
+
     function DisplayContacts(){
         console.log("Contacts Page")
 
