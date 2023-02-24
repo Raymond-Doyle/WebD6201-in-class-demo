@@ -1,5 +1,26 @@
 (function (){
 
+    function DisplayNavBar(){
+        
+        //AJAX CODE SECTION
+         //instantiate the XHR Object
+         let XHR = new XMLHttpRequest()
+
+         //add event listener for the ready state change
+
+         XHR.addEventListener("readystatechange", () => {   
+            if (XHR.readyState === 4 && XHR.status === 200){
+                $('#navigationBar').html(XHR.responseText)
+            }
+         })
+
+         XHR.open("GET", "./static/header.html")
+
+         XHR.send()
+
+    }
+
+
     function DisplayHome(){
 
         //Least Amount of Memory Heap
@@ -34,7 +55,6 @@
         // mainContent.appendChild(mainParagraph)
 
         $("main").addClass("container").append(`<p id="MainParagraph" class="mt-3 container">${secondString}</p>`)
-
     }
 
     function DisplayProjects(){
@@ -49,35 +69,45 @@
             }
     }
 
-    function TestFullName(){
+    function ValidateInput(inputFieldID, regularExpression, exception) {
 
         let messageArea = $('#messageArea').hide()
         
-        let fullNamePattern = /([A-Z][a-z]{1, 25})((\s|,|-)([A-Z][a-z]{1,25}))*(\s|-|,)*([A-Z][a-z]{1,25}))*/g
+        $('#' + inputFieldID).on("blur", function(){
+            let inputText = $(this).val()
+            if (!regularExpression.test(inputText)){
+                $(this).trigger("focus").trigger("select")
 
-        $('#fullName').on("blur", function(){
-            let fullNameText = $(this).val()
-            if (!fullNamePattern.test(fullNameText)){
-                $(this).trigger("focus")
-                $(this).trigger("select")
-
-                messageArea.addClass("alert alert-danger")
-                messageArea.text("Please enter a valid Full name which means a capitalized first name and a captialized last name")
-                messageArea.show()
+                messageArea.addClass("alert alert-danger").text(exception).show()
 
 
             }else{
 
-                messageArea.removeAttr("class")
-                messageArea.hide()
+                messageArea.removeAttr("class").hide()
 
             }
         })
+    }
+
+    function ContactFormValidate(){
+
+        let fullNamePattern = /^([A-Z][a-z]{1,25})((\s|,|-)([A-Z][a-z]{1,}))*(\s|,|-)*([A-Z][a-z]{1,})*$/g
+        let contactNumberPattern = / /g
+        let emailAddressPatten = /^[\w-\.]+@([\w-]+\.+[\w-][\D]{2,10})$/g
+
+        ValidateInput("fullName", fullNamePattern, "Please enter a valid Full name which means a capitalized first name and a captialized last name")
+        ValidateInput("contactNumber", contactNumberPattern, "Please enter a valid phone number")
+        ValidateInput("emailAddress", emailAddressPatten, "Please enter a valid email address")
+
+        //TestFullName()
+        //TestEmailAddress()
 
     }
 
     function DisplayContacts(){
         console.log("Contacts Page")
+
+        ContactFormValidate()
 
         let submitButton = document.getElementById("submitButton")
         let subscribeCheckbox = document.getElementById("subscribeCheckbox")
@@ -154,6 +184,9 @@
     }
 
     function DisplayEditPage(){
+
+        ContactFormValidate()
+
         let page = location.hash.substring(1)
 
         switch(page){
@@ -200,8 +233,16 @@
 
     }
 
+    function DisplayLogin(){
+        console.log("Login Page")
+    }
+
     function DisplayReferences(){
         console.log("References Page")
+    }
+
+    function DisplayRegister(){
+        console.log("Register Page")
     }
 
     function Start(){
@@ -210,6 +251,7 @@
         switch (document.title){
             case "Homepage - WEBD6201 Demo":
                 DisplayHome()
+                DisplayNavBar()
                 break
             case "Projects - WEBD6201 Demo":
                 DisplayProjects()
@@ -222,6 +264,12 @@
                 break
             case "Edit - WEBD6201 Demo":
                 DisplayEditPage()
+                break
+            case "Login - WEBD6201 Demo":
+                DisplayLogin()
+                break
+            case "Register - WEBD6201 Demo":
+                DisplayRegister()
                 break
             case "References - WEBD6201 Demo":
                 DisplayReferences()
