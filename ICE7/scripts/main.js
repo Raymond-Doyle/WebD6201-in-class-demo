@@ -92,7 +92,7 @@
     function ContactFormValidate(){
 
         let fullNamePattern = /^([A-Z][a-z]{1,25})((\s|,|-)([A-Z][a-z]{1,}))*(\s|,|-)*([A-Z][a-z]{1,})*$/g
-        let contactNumberPattern = / /g
+        let contactNumberPattern = /^\(?\d{3}\)?[\s\.\-]?\d{3}[\s\.\-]?\d{4}$/g
         let emailAddressPatten = /^[\w-\.]+@([\w-]+\.+[\w-][\D]{2,10})$/g
 
         ValidateInput("fullName", fullNamePattern, "Please enter a valid Full name which means a capitalized first name and a captialized last name")
