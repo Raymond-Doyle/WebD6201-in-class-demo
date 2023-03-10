@@ -1,23 +1,44 @@
 (function (){
+    /**
+     * This function uses AJAX to open a connection to the server and returns
+     * a data payload to the callback function
+     * 
+     * @param {string} method 
+     * @param {string} url 
+     * @param {function} callback 
+     */
+    function AjaxRequest(method, url, callback) {
+        // AJAX
+        // instantiate the XHR Object
+        let XHR = new XMLHttpRequest()
 
-    function DisplayNavBar(){
-        
-        //AJAX CODE SECTION
-         //instantiate the XHR Object
-         let XHR = new XMLHttpRequest()
-
-         //add event listener for the ready state change
-
-         XHR.addEventListener("readystatechange", () => {   
-            if (XHR.readyState === 4 && XHR.status === 200){
-                $('#navigationBar').html(XHR.responseText)
+        // add event listener for readystatechange
+        XHR.addEventListener("readystatechange", () => {
+            if (XHR.readyState === 4 && XHR.status === 200) {
+                if (typeof callback === 'function') {
+                    callback(XHR.responseText)
+                } else {
+                    console.error("ERROR: callback is not a function")
+                }
             }
-         })
+        })
 
-         XHR.open("GET", "./static/header.html")
+        // connect and get data
+        XHR.open(method, url)
 
-         XHR.send()
+        // send request to server to await response
+        XHR.send()
+    }
 
+    /**
+     * Load the static header
+     * 
+     * @param {HTML} html_data 
+     */
+    function LoadHeader(html_data) {
+        $('#navigationBar').html(html_data)
+        $(`li>a:contains(${ document.title })`).addClass('active')
+        CheckLogin()
     }
 
 
@@ -55,6 +76,7 @@
         // mainContent.appendChild(mainParagraph)
 
         $("main").addClass("container").append(`<p id="MainParagraph" class="mt-3 container">${secondString}</p>`)
+
     }
 
     function DisplayProjects(){
@@ -105,6 +127,9 @@
     }
 
     function DisplayContacts(){
+
+
+
         console.log("Contacts Page")
 
         ContactFormValidate()
@@ -127,6 +152,15 @@
                 AddContact(fullName.value, contactNumber.value, emailAddress.value)
             }
         })
+
+        //Creates a button within a div tag if the user is logged in
+        if (sessionStorage.getItem("user")){
+
+            $("#buttonDiv").append(`<a href="./contact-list.html" class="btn btn-primary btn-lg"><i class="fas fa-users fa-lg"></i> Show Contact List</a>`)
+
+        }
+
+
     }
 
     function DisplayContactList(){
@@ -233,8 +267,80 @@
 
     }
 
-    function DisplayLogin(){
+    function DisplayLogin() {
         console.log("Login Page")
+
+        let messageArea = $('#messageArea')
+        messageArea.hide()
+
+        $('#loginButton').on('click', function() {
+            let success = false
+
+            // create an empty user object
+            let newUser = new core.User()
+
+            // use JQuery to load users.json file and read over it
+            $.get('./user.json', function(data) {
+                // iterate over every user in the users.json file... for loop
+                for (const user of data.users) {
+                    // check if the username and password match the user data
+                    // passed in from users.json
+                    if (username.value == user.Username && password.value == user.Password) {
+                        newUser.fromJSON(user)
+                        success = true
+                        break
+                    }
+                }
+
+                // if username and password matched (success = true) -> perform the login sequence
+                if (success) {
+                    // add user to sessionStorage
+                    sessionStorage.setItem('user', newUser.serialize())
+
+                    // hide any error messages
+                    // missing a part of this code
+                    messageArea.removeAttr('class').hide()
+
+                    // redirect the user to the secure area of our website - contact-list.html
+                    location.href = 'contacts.html'
+                } else {
+                    // display the error message
+                    $('#username').trigger('focus').trigger('select')
+                    messageArea.addClass('alert alert-danger').text('Error: Invalid Login Credentials.. Username/Password Mismatch')
+                }
+            })
+
+            
+        })
+
+        $('#cancelButton').on('click', function() {
+            // clear the form
+            document.form[0].reset()
+
+            // return to home page
+            location.href = 'index.html'
+        })
+    }
+
+    function CheckLogin(){
+
+        if (sessionStorage.getItem("user")){
+
+            $('#login').html(
+
+                `<a id="logout" class="nav-link" href="#"><i class="fas fa-sign-in-alt"></i>Logout</a>`
+
+            )
+
+            $('#logout').on('click', function(){
+               
+                sessionStorage.clear()
+                location.href = 'login.html'
+
+            })
+
+        }
+
     }
 
     function DisplayReferences(){
@@ -247,31 +353,32 @@
 
     function Start(){
         console.log("App Started!")
-    
+        
+        AjaxRequest("GET", "./static/header.html", LoadHeader)
+
         switch (document.title){
-            case "Homepage - WEBD6201 Demo":
+            case "Homepage":
                 DisplayHome()
-                DisplayNavBar()
                 break
-            case "Projects - WEBD6201 Demo":
+            case "Projects":
                 DisplayProjects()
                 break
-            case "Contact Us - WEBD6201 Demo":
+            case "Contact Us":
                 DisplayContacts()
                 break
-            case "Contact List - WEBD6201 Demo":
+            case "Contact List":
                 DisplayContactList()
                 break
-            case "Edit - WEBD6201 Demo":
+            case "Edit":
                 DisplayEditPage()
                 break
-            case "Login - WEBD6201 Demo":
+            case "Login":
                 DisplayLogin()
                 break
-            case "Register - WEBD6201 Demo":
+            case "Register":
                 DisplayRegister()
                 break
-            case "References - WEBD6201 Demo":
+            case "References":
                 DisplayReferences()
                 break
         }
