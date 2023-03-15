@@ -194,11 +194,7 @@
 
             contactList.innerHTML = data
 
-            $("#addButton").on("click", () => {
-
-                location.href = 'edit.html#Add'
-
-            })
+           
 
             $("button.delete").on("click", function(){
 
@@ -214,6 +210,12 @@
             })
 
         }
+
+        $("#addButton").on("click", () => {
+
+            location.href = 'edit.html#Add'
+
+        })
 
     }
 

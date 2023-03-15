@@ -41,6 +41,24 @@
         CheckLogin()
     }
 
+    /**
+     * This function loads content
+     * 
+     * @returns {void}
+     */
+    function LoadContent(){
+
+    }
+
+    /**
+     * This function loads footer
+     * 
+     * @returns {void}
+     */
+    function LoadFooter(){
+
+    }
+
 
     function DisplayHome(){
 
@@ -194,12 +212,6 @@
 
             contactList.innerHTML = data
 
-            $("#addButton").on("click", () => {
-
-                location.href = 'edit.html#Add'
-
-            })
-
             $("button.delete").on("click", function(){
 
                 if (confirm("Are you sure you want to delete this contact?")){
@@ -214,6 +226,12 @@
             })
 
         }
+
+        $("#addButton").on("click", () => {
+
+            location.href = 'edit.html#Add'
+
+        })
 
     }
 
@@ -351,12 +369,32 @@
         console.log("Register Page")
     }
 
+
+    function Display404Page(){
+        console.log("404 Page...")
+    }
+
+    /**
+     * @returns {function}
+     */
+    function ActiveLinkCallBack(){
+
+    }
+
+
     function Start(){
         console.log("App Started!")
         
-        AjaxRequest("GET", "./static/header.html", LoadHeader)
+        //AjaxRequest("GET", "./static/header.html", LoadHeader)
 
-        switch (document.title){
+        LoadHeader()
+
+        LoadContent()
+
+        LoadFooter()
+
+
+        /*switch (document.title){
             case "Homepage":
                 DisplayHome()
                 break
@@ -381,7 +419,7 @@
             case "References":
                 DisplayReferences()
                 break
-        }
+        }*/
 
     }
 
