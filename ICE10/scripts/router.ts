@@ -1,22 +1,38 @@
-//let core
-(function(core){
+namespace core{
 
-    class Router{
+    export class Router{
 
+        //private instance variables
+        private m_activeLink: string
+        private m_linkData: string
+        private m_routingTable: string[]
+        
         //public properties
         /**
          * @returns {string}
          */
-        get ActiveLink(){
+        public get ActiveLink():string {
 
-            return this.m_activelink
+            return this.m_activeLink
         }
 
         /**
          * @param {string} link
          */
-        set ActiveLink(link){
+        public set ActiveLink(link:string){
             this.m_activeLink = link
+        }
+
+        public get LinkData():string {
+
+            return this.m_linkData
+        }
+
+        /**
+         * @param {string} data
+         */
+        public set LinkData(data:string){
+            this.m_linkData = data
         }
 
         //constructor 
@@ -26,7 +42,9 @@
          * @constructor 
          */
         constructor(){
-            this.ActiveLink = ""
+            this.m_activeLink = ""
+            this.m_linkData = ""
+            this.m_routingTable = []  //new Array<string>()
         }
 
         //public methods - paths for methods
@@ -36,7 +54,7 @@
          * @param {string[]} route
          * @returns {void}
          */
-        Add(route) {
+        Add(route:string) :void{
             this.m_routingTable.push(route)
         }
 
@@ -47,7 +65,7 @@
          * @param {string} routingTable 
          * @param {void}
          */
-        AddRoutingTable(routingTable){
+        AddRoutingTable(routingTable:string[]):void{
             this.m_routingTable = routingTable
         }
 
@@ -57,7 +75,7 @@
          * @param {string} route 
          * @returns 
          */
-        Find(route){
+        Find(route:string):number{
             return this.m_routingTable.indexOf(route)
         }
 
@@ -67,7 +85,7 @@
          * @param {string} route 
          * @returns {boolean}
          */
-        Remove(route){
+        Remove(route:string):boolean{
 
             if (this.Find(route) > -1){
                 
@@ -86,17 +104,13 @@
          * 
          * @returns {string}
          */
-        toString(){
+        toString():string{
             return this.m_routingTable.toString()
         }
-
     }
+}
 
-
-core.Router = Router
-})(core || (core = {}))
-
-let router = new core.Router()
+let router:core.Router = new core.Router()
 
 
 router.AddRoutingTable([
@@ -115,7 +129,7 @@ router.AddRoutingTable([
 ])
 
 
-let route = location.pathname
+let route:string = location.pathname
 
 /*if (router.Find(route) > -1){
     router.ActiveLink = (route == "/") ? "home" : route.substring(1)
