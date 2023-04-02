@@ -477,7 +477,7 @@
 
             $('#login').html(
 
-                `<a id="logout" class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i>Logout</a>`
+                `<a id="logout" class="nav-link" data="login"><i class="fas fa-sign-in-alt"></i>Logout</a>`
 
             )
 
