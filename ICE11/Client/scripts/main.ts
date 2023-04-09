@@ -3,162 +3,16 @@
     function AuthGuard(): void {
         
         let protectedRoutes: string[] = [
-            'contact-list'
+            '/contact-list',
+            '/edit'
         ]
     
-        if (protectedRoutes.indexOf(router.ActiveLink) > -1){
+        if (protectedRoutes.indexOf(location.pathname) > -1){
             if (!sessionStorage.getItem("user")) {
-                router.ActiveLink = 'login'
+                location.href = '/login'
             }
         }
     
-    }
-
-    function LoadLink(link: string, data: string = ""): void {
-
-        router.ActiveLink = link
-
-        AuthGuard()
-
-        router.LinkData = data
-        history.pushState({}, "", router.ActiveLink)
-
-        document.title = router.ActiveLink.substring(0, 1).toUpperCase() + router.ActiveLink.substring(1)
-
-        console.log(router.ActiveLink.substring(0, 1).toUpperCase() + router.ActiveLink.substring(1))
-
-        $('ul>li>a').each(function() {
-            $(this).removeClass('active')
-        })
-        $(`li>a:contains(${ document.title })`).addClass('active')
-
-        LoadContent()
-    }
-
-    function AddNavigationEvents(): void {
-
-        let navLinks = $('ul>li>a')
-
-        navLinks.off('click')
-        navLinks.off('mouseover')
-
-        navLinks.on('click', function() {
-            LoadLink($(this).attr('data') as string)
-        })
-
-        navLinks.on('mouseover', function() {
-            $(this).css('cursor', 'pointer')
-        })
-
-    }
-
-    function AddLinkEvents(link: string): void {
-        
-        let linkQuery = $(`a.link[data=${link}]`)
-
-        linkQuery.off('click')
-        linkQuery.off('mouseover')
-        linkQuery.off('mouseout')
-
-        linkQuery.css('text-decoration', 'underline')
-        linkQuery.css('color', 'blue')
-
-        linkQuery.on('click', function(){
-            LoadLink(`${link}`)
-        })
-        linkQuery.on('mouseover', function(){
-            $(this).css('cursor', 'pointer')
-            $(this).css('font-weight', 'bold')
-        })
-        linkQuery.on('mouseout', function(){
-            $(this).css('font-weight', 'normal')
-        })
-
-    }
-
-
-    /**
-     * This function uses AJAX to open a connection to the server and returns
-     * a data payload to the callback function
-     * 
-     * @param {string} method 
-     * @param {string} url 
-     * @param {Function} callback 
-     */
-    /*function AjaxRequest(method:string, url:string, callback:Function) {
-        // AJAX
-        // instantiate the XHR Object
-        let XHR = new XMLHttpRequest()
-
-        // add event listener for readystatechange
-        XHR.addEventListener("readystatechange", () => {
-            if (XHR.readyState === 4 && XHR.status === 200) {
-                if (typeof callback === 'function') {
-                    callback(XHR.responseText)
-                } else {
-                    console.error("ERROR: callback is not a function")
-                }
-            }
-        })
-
-        // connect and get data
-        XHR.open(method, url)
-
-        // send request to server to await response
-        XHR.send()
-    }*/
-
-    /**
-     * Load the static header
-     * 
-     * @param {HTML} html_data 
-     */
-    function LoadHeader(): Function {
-
-        $.get('./Views/components/header.html', function(html_data){
-
-            $('#navigationBar').html(html_data)
-
-            AddNavigationEvents()
-            
-            CheckLogin()
-        })
-
-        return new Function()
-    }
-
-    /**
-     * This function loads content
-     * 
-     * @returns {void}
-     */
-    function LoadContent(): Function{
-        let pageName = router.ActiveLink
-        $.get(`./Views/content/${ pageName }.html`, function(html_data){
-
-            $('main').html(html_data)
-
-            CheckLogin()
-
-            ActiveLinkCallBack()
-
-        })
-        return new Function()
-    }
-
-    /**
-     * This function loads footer
-     * 
-     * @returns {void}
-     */
-    function LoadFooter(): Function{
-       
-        $.get('./Views/components/footer.html', function(html_data){
-
-            $('footer').html(html_data)
-
-        })
-        return new Function()
     }
 
 
@@ -254,7 +108,7 @@
 
         $('a[data="contact-list"]').off('click')
         $('a[data="contact-list"]').on('click', function() {
-            LoadLink('contact-list')
+            location.href = '/contact-list'
         })
 
         ContactFormValidate()
@@ -286,7 +140,7 @@
         //Creates a button within a div tag if the user is logged in
         if (sessionStorage.getItem("user")){
 
-            $("#buttonDiv").append(`<a data="contact-list" class="btn btn-primary btn-lg link"><i class="fas fa-users fa-lg"></i> Show Contact List</a>`)
+            $("#buttonDiv").append(`<a href="/contact-list" class="btn btn-primary btn-lg link"><i class="fas fa-users fa-lg"></i> Show Contact List</a>`)
 
         }
 
@@ -332,12 +186,12 @@
                 }
 
                 //location.href = "/contact-list"
-                LoadLink('contat-list')
+                location.href = '/contact-list'
             })
 
             $("button.edit").on("click", function(){
                 //location.href = '/edit#' + $(this).val() as string
-                LoadLink('edit', $(this).val() as string)
+                location.href = '/edit#' + $(this).val() as string
             })
 
         }
@@ -345,7 +199,7 @@
         $("#addButton").on("click", () => {
 
             //location.href = '/edit#Add'
-            LoadLink('edit', 'Add')
+            location.href = '/edit#Add'
 
         })
 
@@ -356,7 +210,7 @@
 
         ContactFormValidate()
 
-        let page = router.LinkData
+        let page = location.hash.substring(1)
 
         switch(page){
             case "Add":
@@ -375,7 +229,7 @@
                         AddContact(fullName, contactNumber, emailAddress)
 
                         //location.href = "/contact-list"
-                        LoadLink('contact-list')
+                        location.href = '/contact-list'
                     })
                 }
                 break
@@ -398,7 +252,7 @@
                         localStorage.setItem(page, contact.serialize() as string)
 
                         //location.href = "/contact-list"
-                        LoadLink('contact-list')
+                        location.href = '/contact-list'
                     })
                 }
                 break
@@ -413,7 +267,6 @@
         let messageArea = $('#messageArea')
         messageArea.hide()
 
-        AddLinkEvents('register')
 
         $('#loginButton').on('click', function() {
             let success = false
@@ -449,7 +302,7 @@
 
                     // redirect the user to the secure area of our website - contact-list.html
                     //location.href = '/contacts'
-                    LoadLink('contact-list')
+                    location.href = '/contact-list'
                 } else {
                     // display the error message
                     $('#username').trigger('focus').trigger('select')
@@ -466,7 +319,7 @@
 
             // return to home page
             //location.href = '/home'
-            LoadLink('home')
+            location.href = '/home'
         })
         return new Function()
     }
@@ -477,7 +330,7 @@
 
             $('#login').html(
 
-                `<a id="logout" class="nav-link" data="login"><i class="fas fa-sign-in-alt"></i>Logout</a>`
+                `<a id="logout" class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i>Logout</a>`
 
             )
 
@@ -485,10 +338,10 @@
                
                 sessionStorage.clear()
 
-                $('#login').html(`<a class="nav-link" data="login"><i class="fas fa-sign-in-alt"></i>Login</a>`)
+                $('#login').html(`<a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i>Login</a>`)
 
                 //location.href = '/login'
-                LoadLink('login')
+                location.href = '/login'
             })
 
         }
@@ -503,8 +356,6 @@
     function DisplayRegister(): Function{
         console.log("Register Page")
 
-        AddLinkEvents('login')
-
         return new Function()
     }
 
@@ -514,44 +365,39 @@
         return new Function()
     }
 
-    /**
-     * @returns {Function}
-     */
-    function ActiveLinkCallBack(): Function{
-
-        console.log(`ActiveLinkCallBack - ${ router.ActiveLink}`)
-        switch (router.ActiveLink){
-            case "home": return DisplayHome()
-            case "projects": return DisplayProjects()
-            case "contact": return DisplayContacts()
-            case "contact-list": return DisplayContactList()
-            case "references": return DisplayReferences()
-            case "edit": return DisplayEditPage()
-            case "login": return DisplayLogin()
-            case "register": return DisplayRegister()
-            case "404": return Display404Page()
-
-            default:
-                console.error(`Error: Callback does not Exist... ${router.ActiveLink}`)
-                return new Function()
-        }
-
-
-    }
-
 
     function Start(){
         console.log("App Started!")
-        
-        LoadHeader()
+       
+        let pageId = $('body')[0].getAttribute('id')
 
-        //LoadContent()
-        LoadLink("home")
+        CheckLogin()
 
-        LoadFooter()
 
+        switch (router.ActiveLink){
+            case "home":
+                DisplayHome()
+            case "projects":
+                DisplayProjects()
+            case "contacts":
+                DisplayContacts()
+            case "contact-list":
+                AuthGuard()
+                DisplayContactList()
+            case "references":
+                DisplayReferences()
+            case "edit":
+                AuthGuard()
+                DisplayEditPage()
+            case "login":
+                DisplayLogin()
+            case "register":
+                DisplayRegister()
+            case "404":
+                Display404Page()
+
+        }
     }
-
 
     window.addEventListener("load", Start)
 })()
